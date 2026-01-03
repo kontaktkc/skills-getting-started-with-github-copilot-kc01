@@ -76,8 +76,8 @@ def get_sum_of_primes(n: int):
     if n > 10000:
         raise HTTPException(status_code=400, detail="n must be <= 10000 for performance reasons")
     
-    prime_sum = sum_of_first_n_primes(n)
     primes = generate_first_n_primes(n)
+    prime_sum = sum(primes)
     
     return {
         "count": n,

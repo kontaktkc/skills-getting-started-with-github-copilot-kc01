@@ -48,12 +48,17 @@ def generate_first_n_primes(n):
         return []
     
     primes = []
-    candidate = 2
     
+    # Handle first prime (2) separately
+    if n >= 1:
+        primes.append(2)
+    
+    # Check odd numbers starting from 3
+    candidate = 3
     while len(primes) < n:
         if is_prime(candidate):
             primes.append(candidate)
-        candidate += 1
+        candidate += 2  # Skip even numbers
     
     return primes
 
