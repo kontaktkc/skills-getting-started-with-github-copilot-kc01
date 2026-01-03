@@ -10,6 +10,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 import os
 from pathlib import Path
+from .prime_utils import sum_of_first_n_primes, generate_first_n_primes
 
 app = FastAPI(title="Mergington High School API",
               description="API for viewing and signing up for extracurricular activities")
@@ -65,3 +66,21 @@ def signup_for_activity(activity_name: str, email: str):
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
+
+
+@app.get("/primes/sum/{n}")
+def get_sum_of_primes(n: int):
+    """Get the sum of the first n prime numbers"""
+    if n <= 0:
+        raise HTTPException(status_code=400, detail="n must be a positive integer")
+    if n > 10000:
+        raise HTTPException(status_code=400, detail="n must be <= 10000 for performance reasons")
+    
+    primes = generate_first_n_primes(n)
+    prime_sum = sum(primes)
+    
+    return {
+        "count": n,
+        "primes": primes,
+        "sum": prime_sum
+    }
